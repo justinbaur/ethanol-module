@@ -1,6 +1,6 @@
 # ethanol-module
 
-Module to read the ethanol percentage of a standard 50hz to 150hz ethanol content sensor
+Module to read the ethanol percentage of a standard automotive 50hz to 150hz ethanol content sensor
 
 ## Description
 
@@ -8,7 +8,7 @@ The goal of this project was to build an affordable way to read ethanol for cars
 
 ## Reference
 
-This is a cleaned up example I put together to integrate with a Raspberry Pi and Adafruit Trinket. The original idea and code can be tied back to the user Dala on the [sr20 forums](https://www.sr20-forum.com/nismotronic/76787-flex-fuel-sensor-output.html) and referenced through various other forums from [NASIOC](https://forums.nasioc.com/forums/showthread.php?t=2810122) and [evolutionm](https://www.evolutionm.net/forums/e85-ethanol/734384-e85-gauge-w-output-under-100-a.html). Code was included in snippets across forums and were specific to displaying on an small LCD but this project returns data over [I2C SDA/SCL](https://learn.adafruit.com/introducing-pro-trinket/pinouts) to the Raspberry Pi.
+This is a cleaned up example I put together to integrate with a Raspberry Pi and Adafruit Trinket. The original idea and code can be tied back to the user Dala on the [sr20 forums](https://www.sr20-forum.com/nismotronic/76787-flex-fuel-sensor-output.html) and referenced through other various forums from [NASIOC](https://forums.nasioc.com/forums/showthread.php?t=2810122) and [evolutionm](https://www.evolutionm.net/forums/e85-ethanol/734384-e85-gauge-w-output-under-100-a.html). The code was included in snippets across forums and were specific to displaying on an small LCD but this project returns data over [I2C SDA/SCL](https://learn.adafruit.com/introducing-pro-trinket/pinouts) to the Raspberry Pi.
 
 ## Usage
 
@@ -33,4 +33,4 @@ The full picture of how this can be implemented and pinned.
 
 ![pin out diagram](e85_diagram.png)
 
-Pin out pictures pulled from <https://pinout.xyz/#> and <https://learn.adafruit.com/introducing-pro-trinket/pinouts>
+Pin out pictures pulled from <https://pinout.xyz> and <https://learn.adafruit.com/introducing-pro-trinket/pinouts>
