@@ -34,3 +34,36 @@ The full picture of how this can be implemented and pinned.
 ![pin out diagram](e85_diagram.png)
 
 Pin out pictures pulled from <https://pinout.xyz> and <https://learn.adafruit.com/introducing-pro-trinket/pinouts>
+
+An editable schematic (KiCad 7+) is in [`diagram/ethanolModule.kicad_sch`](diagram/ethanolModule.kicad_sch).
+
+## System diagram
+
+```mermaid
+graph LR
+  S["Ethanol Sensor<br/>50–150 Hz"] -->|"Pin 8 / ICP1"| A["Arduino Pro Trinket<br/>ATmega328 @ 8 MHz"]
+  A -->|"I2C 0x04<br/>SDA / SCL"| R["Raspberry Pi"]
+  R -->|"smbus read"| P["Python Consumer"]
+```
+
+## Pinout
+
+| Signal | Arduino Pin | Raspberry Pi | Notes |
+|---|---|---|---|
+| Sensor signal | 8 (ICP1) | — | 50–150 Hz square wave from flex-fuel sensor |
+| I2C SDA | SDA (A4) | GPIO 2 (Pin 3) | |
+| I2C SCL | SCL (A5) | GPIO 3 (Pin 5) | |
+| GND | GND | GND (Pin 6) | Common ground required |
+| 5V | BAT/5V | 5V (Pin 2) | Power Arduino from Pi or shared supply |
+
+## Build
+
+Uses [PlatformIO](https://platformio.org/). Install via `pip install platformio`.
+
+```sh
+# Compile for Pro Trinket 5V
+pio run -e pro_trinket_5v
+
+# Run unit tests (host, no hardware needed)
+pio test -e native
+```
