@@ -1,6 +1,6 @@
 #include <Wire.h>
 #include <util/atomic.h>
-#include "ethanol_math.h"
+#include "include/ethanol_math.h"
 
 #define I2C_ADDRESS 0x04
 
