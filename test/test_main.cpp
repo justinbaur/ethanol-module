@@ -1,5 +1,5 @@
 #include <unity.h>
-#include "ethanol_math.h"
+#include "../src/include/ethanol_math.h"
 
 void setUp(void) {}
 void tearDown(void) {}
