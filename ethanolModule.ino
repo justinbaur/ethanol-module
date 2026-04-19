@@ -1,4 +1,6 @@
 #include <Wire.h>
+#include <util/atomic.h>
+#include "ethanol_math.h"
 
 #define I2C_ADDRESS 0x04
 
@@ -16,8 +18,10 @@ int ethanol = 0;
 void setupTimer(void)
 {
   TCCR1A = 0;
+  // TCCR1B: ICNC1=1, ICES1=1 (rising edge capture), CS12=1 (prescaler /256) → 0b10000100 = 132
   TCCR1B = 132;
   TCCR1C = 0;
+  // TIMSK1: ICIE1=1 (input capture interrupt), TOIE1=1 (overflow interrupt) → 0b00100001 = 33
   TIMSK1 = 33;
   TCNT1 = 0;
 }
@@ -29,7 +33,7 @@ ISR(TIMER1_CAPT_vect)
   TCNT1 = 0;
 }
 
-/* Timer/Counter1 Overflow */
+/* Timer/Counter1 Overflow — sensor signal lost */
 ISR(TIMER1_OVF_vect)
 {
   revTick = 0;
@@ -51,10 +55,17 @@ void setup(void)
 
 void loop(void)
 {
-  if (revTick > 0)
+  // revTick is uint16_t written by ISR — read atomically to avoid torn 16-bit read on 8-bit AVR
+  uint16_t tick;
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    tick = revTick;
+  }
+
+  if (tick > 0)
   {
-    HZ = 62200 / revTick;
-    ethanol = (HZ - 50);
+    // 62200 ≈ F_CPU(16 MHz) / prescaler(256); empirically calibrated for this sensor
+    HZ = 62200 / tick;
+    ethanol = hz_to_ethanol(HZ);
   }
   else
   {
@@ -81,6 +92,6 @@ void receiveData(int byteCount)
 
 void sendData(void)
 {
-  Wire.write(data);
+  Wire.write((uint8_t)data);
   digitalWrite(LED_PIN, LOW);
 }
